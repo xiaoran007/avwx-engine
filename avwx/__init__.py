@@ -8,7 +8,7 @@ from datetime import datetime
 
 # module
 from avwx import (
-    # airep,
+    airep,
     metar,
     pirep,
     service,
@@ -66,10 +66,6 @@ class Report(object):
             self._station_info = Station.from_icao(self.station)
         return self._station_info
 
-    @abstractmethod
-    def _post_update(self):
-        pass
-
     @classmethod
     def from_report(cls, report: str) -> "Report":
         """
@@ -78,6 +74,22 @@ class Report(object):
         obj = cls(report[:4])
         obj.update(report)
         return obj
+
+    @abstractmethod
+    def _post_update(self):
+        pass
+
+    def _update(self, report: str, disable_post: bool) -> bool:
+        """
+        Handle logic around report update truthiness
+        """
+        if not report or report == self.raw:
+            return False
+        self.raw = report
+        if not disable_post:
+            self._post_update()
+        self.last_updated = datetime.utcnow()
+        return True
 
     def update(self, report: str = None, disable_post: bool = False) -> bool:
         """
@@ -89,25 +101,14 @@ class Report(object):
         """
         if not report:
             report = self.service.fetch(self.station)
-        if not report or report == self.raw:
-            return False
-        self.raw = report
-        if not disable_post:
-            self._post_update()
-        self.last_updated = datetime.utcnow()
-        return True
+        return self._update(report, disable_post)
 
     async def async_update(self, disable_post: bool = False) -> bool:
         """
         Async version of update
         """
         report = await self.service.async_fetch(self.station)
-        if not report or report == self.raw:
-            return False
-        self.raw = report
-        if not disable_post:
-            self._post_update()
-        return True
+        return self._update(report, disable_post)
 
     def __repr__(self) -> str:
         return f"<avwx.{self.__class__.__name__} station={self.station}>"
@@ -196,6 +197,12 @@ class Reports(object):
         self.lon = lon
         self.service = service.NOAA("aircraftreport")
 
+    def __repr__(self) -> str:
+        loc = f"lat={self.lat} lon={self.lon}"
+        if self.station_info:
+            loc += f" station={self.station_info.icao}"
+        return f"<avwx.{self.__class__.__name__} {loc}>"
+
     def _post_update(self):
         pass
 
@@ -205,6 +212,19 @@ class Reports(object):
         Applies any report filtering before updating raw_reports
         """
         return reports
+
+    def _update(self, reports: [str], disable_post: bool) -> bool:
+        """
+        Handle logic around report update truthiness
+        """
+        reports = self._report_filter(reports)
+        if not reports or reports == self.raw:
+            return False
+        self.raw = reports
+        if not disable_post:
+            self._post_update()
+        self.last_updated = datetime.utcnow()
+        return True
 
     def update(self, reports: [str] = None, disable_post: bool = False) -> bool:
         """
@@ -220,25 +240,14 @@ class Reports(object):
                 return False
         if isinstance(reports, str):
             reports = [reports]
-        if reports == self.raw:
-            return False
-        self.raw = self._report_filter(reports)
-        if not disable_post:
-            self._post_update()
-        self.last_updated = datetime.utcnow()
-        return True
+        return self._update(reports, disable_post)
 
     async def async_update(self, disable_post: bool = False) -> bool:
         """
         Async version of update
         """
         reports = await self.service.async_fetch(lat=self.lat, lon=self.lon)
-        if not reports or reports == self.raw:
-            return False
-        self.raw = reports
-        if not disable_post:
-            self._post_update()
-        return True
+        return self._update(reports, disable_post)
 
 
 class Pireps(Reports):
@@ -253,7 +262,7 @@ class Pireps(Reports):
         """
         Removes AIREPs before updating raw_reports
         """
-        return [r for r in reports if not r.startswith("ARP")]
+        return [r for r in reports if r and r[:3] not in ("ARP", "ARS")]
 
     def _post_update(self):
         self.data = []
@@ -261,21 +270,21 @@ class Pireps(Reports):
             self.data.append(pirep.parse(report))
 
 
-# class Aireps(Reports):
-#     """
-#     Class to handle aircraft report data
-#     """
+class Aireps(Reports):
+    """
+    Class to handle aircraft report data
+    """
 
-#     data: [structs.AirepData] = None
+    data: [structs.AirepData] = None
 
-#     @staticmethod
-#     def _report_filter(reports: [str]) -> [str]:
-#         """
-#         Removes PIREPs before updating raw_reports
-#         """
-#         return [r for r in reports if r.startswith("ARP")]
+    @staticmethod
+    def _report_filter(reports: [str]) -> [str]:
+        """
+        Removes PIREPs before updating raw_reports
+        """
+        return [r for r in reports if r and r[:3] in ("ARP", "ARS")] or None
 
-#     def _post_update(self):
-#         self.data = []
-#         for report in self.raw:
-#             airep.parse(report)
+    def _post_update(self):
+        self.data = []
+        for report in self.raw:
+            airep.parse(report)

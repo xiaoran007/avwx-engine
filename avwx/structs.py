@@ -246,6 +246,6 @@ class PirepData(ReportData):
     wx: [str] = None
 
 
-# @dataclass
-# class AirepData(ReportData):
-#     pass
+@dataclass
+class AirepData(ReportData):
+    pass

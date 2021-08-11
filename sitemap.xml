@@ -2,77 +2,77 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://engine.avwx.rest/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/getting-started/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/av/metar/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/av/pirep/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/av/taf/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/gfs/mav/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/gfs/mex/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/nbm/nbe/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/nbm/nbh/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/nbm/nbs/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/util/exceptions/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/util/service/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/util/static/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/util/station/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://engine.avwx.rest/util/structs/</loc>
-         <lastmod>2021-06-10</lastmod>
+         <lastmod>2021-08-11</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
